@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Karthik M C — Software Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0a;
+  --bg2:#111111;
+  --bg3:#1a1a1a;
+  --line:#ffffff14;
+  --text:#f0ede8;
+  --muted:#888880;
+  --faint:#333330;
+  --accent:#c8f04e;
+  --accent2:#4ef0c8;
+  --accent3:#f04e8c;
+  --syne:'Syne',sans-serif;
+  --inter:'Inter',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--inter);background:var(--bg);color:var(--text);overflow-x:hidden;cursor:none}
+
+/* CURSOR */
+.cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.15s ease;mix-blend-mode:difference}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.12s ease;mix-blend-mode:difference}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 3rem;height:68px;border-bottom:1px solid var(--line);background:rgba(10,10,10,0.85);backdrop-filter:blur(16px);transition:box-shadow 0.3s}
+nav.scrolled{box-shadow:0 4px 40px rgba(0,0,0,0.5)}
+.nav-logo{font-family:var(--syne);font-size:16px;font-weight:700;letter-spacing:0.08em;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:10px}
+.nav-logo-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.nav-logo span{color:var(--accent)}
+.nav-center{display:flex;align-items:center;gap:2px;list-style:none;position:absolute;left:50%;transform:translateX(-50%)}
+.nav-center li a{
+  position:relative;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;font-weight:500;
+  padding:8px 18px;border-radius:6px;transition:color 0.2s,background 0.2s;
+  display:flex;align-items:center;gap:7px;
+}
+.nav-center li a .nav-icon{font-size:13px;opacity:0.7}
+.nav-center li a:hover{color:var(--text);background:rgba(255,255,255,0.06)}
+.nav-center li a.active{color:var(--accent)}
+.nav-center li a.active::after{
+  content:'';position:absolute;bottom:-1px;left:18px;right:18px;height:2px;
+  background:var(--accent);border-radius:2px 2px 0 0;
+  box-shadow:0 0 8px var(--accent);
+}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-status{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);letter-spacing:0.08em}
+.status-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite;box-shadow:0 0 6px #4ade80}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.nav-hire{
+  font-family:var(--syne);font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  color:#0a0a0a;background:var(--accent);padding:8px 18px;text-decoration:none;
+  border-radius:4px;transition:opacity 0.2s,transform 0.2s;
+}
+.nav-hire:hover{opacity:0.85;transform:translateY(-1px)}
+/* HAMBURGER */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all 0.3s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+/* MOBILE DRAWER */
+.nav-drawer{
+  position:fixed;top:68px;left:0;right:0;background:rgba(10,10,10,0.97);
+  backdrop-filter:blur(20px);border-bottom:1px solid var(--line);
+  padding:1.5rem 2rem;z-index:99;
+  transform:translateY(-110%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  display:flex;flex-direction:column;gap:4px;
+}
+.nav-drawer.open{transform:translateY(0)}
+.nav-drawer a{
+  font-size:13px;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;font-weight:500;
+  padding:14px 16px;border-radius:6px;display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--line);transition:color 0.2s,background 0.2s;
+}
+.nav-drawer a:last-child{border-bottom:none}
+.nav-drawer a:hover,.nav-drawer a.active{color:var(--accent);background:rgba(200,240,78,0.05)}
+.nav-drawer a .nav-icon{font-size:16px}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 3rem 5rem;position:relative;overflow:hidden}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:80px 80px;opacity:0.6}
+.hero-glow{position:absolute;top:-20%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(200,240,78,0.08) 0%,transparent 70%);pointer-events:none}
+.hero-tag{font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem;display:flex;align-items:center;gap:12px;opacity:0;animation:fadeUp 0.7s ease 0.2s forwards}
+.hero-tag::before{content:'';width:32px;height:1px;background:var(--accent)}
+.hero-name{font-family:var(--syne);font-size:clamp(64px,10vw,130px);font-weight:800;line-height:0.92;letter-spacing:-0.04em;margin-bottom:2.5rem;opacity:0;animation:fadeUp 0.7s ease 0.35s forwards}
+.hero-name .line2{color:transparent;-webkit-text-stroke:1px rgba(240,237,232,0.3)}
+.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;opacity:0;animation:fadeUp 0.7s ease 0.5s forwards}
+.hero-desc{max-width:420px;font-size:15px;color:var(--muted);line-height:1.8;font-weight:300}
+.hero-desc strong{color:var(--text);font-weight:500}
+.hero-cta{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#0a0a0a;font-family:var(--syne);font-size:13px;font-weight:700;letter-spacing:0.06em;padding:14px 32px;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s}
+.hero-cta:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 rgba(200,240,78,0.3)}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--faint);opacity:0;animation:fadeUp 0.7s ease 1s forwards}
+.scroll-hint::after{content:'';width:1px;height:40px;background:linear-gradient(to bottom,var(--faint),transparent);animation:scrollLine 2s ease infinite}
+@keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* SECTION BASE */
+.section{max-width:1100px;margin:0 auto;padding:8rem 3rem}
+.s-label{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;display:flex;align-items:center;gap:14px}
+.s-label::before{content:'';width:20px;height:1px;background:var(--accent)}
+.s-head{font-family:var(--syne);font-size:clamp(36px,5vw,56px);font-weight:800;letter-spacing:-0.03em;line-height:1.05;margin-bottom:3rem}
+
+/* ABOUT */
+#about{border-top:1px solid var(--line)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start}
+.about-text p{font-size:17px;color:var(--muted);line-height:1.9;margin-bottom:1.2rem;font-weight:300}
+.about-text p strong{color:var(--text);font-weight:500}
+.about-stats{display:flex;flex-direction:column;gap:1px;background:var(--line)}
+.stat-box{background:var(--bg);padding:2rem;display:flex;flex-direction:column;gap:4px;border:1px solid var(--line);transition:background 0.3s}
+.stat-box:hover{background:var(--bg3)}
+.stat-num{font-family:var(--syne);font-size:48px;font-weight:800;color:var(--accent);letter-spacing:-0.04em;line-height:1}
+.stat-label{font-size:12px;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase}
+
+/* SKILLS */
+#skills{border-top:1px solid var(--line)}
+.skills-cats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line)}
+.skill-cat{background:var(--bg);padding:2rem;border:1px solid var(--line);transition:background 0.3s}
+.skill-cat:hover{background:var(--bg3)}
+.cat-name{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--line)}
+.skill-list{display:flex;flex-direction:column;gap:10px}
+.skill-item{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text);font-weight:400}
+.skill-item::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0}
+
+/* EXPERIENCE */
+#experience{border-top:1px solid var(--line)}
+.exp-card{border:1px solid var(--line);padding:3rem;margin-bottom:1px;background:var(--bg);transition:background 0.3s;position:relative;overflow:hidden}
+.exp-card:hover{background:var(--bg3)}
+.exp-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);transform:scaleY(0);transform-origin:bottom;transition:transform 0.4s ease}
+.exp-card:hover::before{transform:scaleY(1)}
+.exp-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem;gap:2rem}
+.exp-role{font-family:var(--syne);font-size:26px;font-weight:700;letter-spacing:-0.02em;margin-bottom:6px}
+.exp-company{font-size:13px;color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;font-weight:500}
+.exp-date{font-size:12px;color:var(--muted);letter-spacing:0.06em;white-space:nowrap;padding-top:6px}
+.exp-points{list-style:none;display:flex;flex-direction:column;gap:12px}
+.exp-points li{font-size:14px;color:var(--muted);line-height:1.75;padding-left:18px;position:relative;font-weight:300}
+.exp-points li::before{content:'→';position:absolute;left:0;color:var(--accent2);font-size:12px;top:2px}
+.exp-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(200,240,78,0.08);border:1px solid rgba(200,240,78,0.2);font-size:11px;color:var(--accent);letter-spacing:0.06em;margin-top:1.5rem}
+
+/* PROJECTS */
+#projects{border-top:1px solid var(--line)}
+.projects-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+.proj-card{background:var(--bg);padding:3rem;border:1px solid var(--line);transition:background 0.3s;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.proj-card:hover{background:var(--bg3)}
+.proj-num{font-family:var(--syne);font-size:80px;font-weight:800;color:var(--faint);line-height:1;margin-bottom:1.5rem;letter-spacing:-0.05em}
+.proj-title{font-family:var(--syne);font-size:22px;font-weight:700;letter-spacing:-0.02em;margin-bottom:1rem;line-height:1.2}
+.proj-desc{font-size:14px;color:var(--muted);line-height:1.8;flex:1;margin-bottom:2rem;font-weight:300}
+.proj-tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;padding:5px 12px;border:1px solid var(--faint);color:var(--muted);font-weight:500;transition:all 0.2s}
+.proj-card:hover .tag{border-color:rgba(78,240,200,0.3);color:var(--accent2)}
+
+/* EDUCATION */
+#education{border-top:1px solid var(--line)}
+.edu-box{border:1px solid var(--line);padding:3rem;background:var(--bg);display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center}
+.edu-degree{font-family:var(--syne);font-size:24px;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px}
+.edu-inst{font-size:13px;color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;font-weight:500;margin-bottom:6px}
+.edu-loc{font-size:12px;color:var(--muted)}
+.edu-year{font-family:var(--syne);font-size:48px;font-weight:800;color:var(--faint);letter-spacing:-0.04em;line-height:1}
+
+/* CONTACT */
+#contact{border-top:1px solid var(--line);text-align:center}
+.contact-big{font-family:var(--syne);font-size:clamp(48px,8vw,96px);font-weight:800;letter-spacing:-0.04em;line-height:1;margin-bottom:2rem}
+.contact-big span{color:var(--accent)}
+.contact-sub{font-size:16px;color:var(--muted);margin-bottom:3.5rem;font-weight:300}
+.contact-links{display:flex;justify-content:center;gap:1px;flex-wrap:wrap;background:var(--line);max-width:600px;margin:0 auto}
+.c-link{flex:1;min-width:140px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:2rem;background:var(--bg);border:1px solid var(--line);text-decoration:none;color:var(--text);transition:background 0.3s;font-size:13px;font-weight:500}
+.c-link:hover{background:var(--bg3)}
+.c-link .c-icon{font-size:20px;margin-bottom:4px}
+.c-link small{font-size:10px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase}
+
+/* FOOTER */
+footer{border-top:1px solid var(--line);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#ffffff;letter-spacing:0.08em}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:0 1.5rem}
+  .nav-center{display:none}
+  .nav-status{display:none}
+  .nav-hire{display:none}
+  .hamburger{display:flex}
+  #hero{padding:0 1.5rem 4rem}
+  .section{padding:5rem 1.5rem}
+  .about-grid{grid-template-columns:1fr}
+  .skills-cats{grid-template-columns:1fr}
+  .projects-grid{grid-template-columns:1fr}
+  .edu-box{grid-template-columns:1fr}
+  .edu-year{display:none}
+  .hero-bottom{flex-direction:column;gap:2rem;align-items:flex-start}
+  footer{flex-direction:column;gap:1rem;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-logo" href="#hero"><span class="nav-logo-dot"></span>KMC<span>.</span></a>
+
+  <ul class="nav-center">
+    <li><a href="#hero" class="nav-link active" data-section="hero"><span class="nav-icon">⌂</span>Home</a></li>
+    <li><a href="#about" class="nav-link" data-section="about"><span class="nav-icon">◎</span>About Us</a></li>
+    <li><a href="#projects" class="nav-link" data-section="projects"><span class="nav-icon">◈</span>Projects</a></li>
+    <li><a href="#skills" class="nav-link" data-section="skills"><span class="nav-icon">⬡</span>Skills</a></li>
+    <li><a href="#experience" class="nav-link" data-section="experience"><span class="nav-icon">◷</span>Experience</a></li>
+    <li><a href="#contact" class="nav-link" data-section="contact"><span class="nav-icon">✉</span>Contact</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <div class="nav-status"><span class="status-dot"></span>Available for work</div>
+    <a class="nav-hire" href="mailto:karthikmc60@gmail.com">Hire Me</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE DRAWER -->
+<div class="nav-drawer" id="navDrawer">
+  <a href="#hero" class="drawer-link active"><span class="nav-icon">⌂</span>Home</a>
+  <a href="#about" class="drawer-link"><span class="nav-icon">◎</span>About Us</a>
+  <a href="#projects" class="drawer-link"><span class="nav-icon">◈</span>Projects</a>
+  <a href="#skills" class="drawer-link"><span class="nav-icon">⬡</span>Skills</a>
+  <a href="#experience" class="drawer-link"><span class="nav-icon">◷</span>Experience</a>
+  <a href="#education" class="drawer-link"><span class="nav-icon">◑</span>Education</a>
+  <a href="#contact" class="drawer-link"><span class="nav-icon">✉</span>Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <p class="hero-tag">Software Engineer · Bengaluru, India</p>
+  <h1 class="hero-name">Karthik<br><span class="line2">M C</span></h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">Building <strong>scalable backend systems</strong> with Java &amp; Spring Boot. Passionate about <strong>distributed architectures</strong>, high-throughput APIs, and AI-driven solutions at TCS.</p>
+    <a class="hero-cta" href="#contact">Let's connect ↗</a>
+  </div>
+  <div class="scroll-hint">scroll</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+  <p class="s-label">About me</p>
+  <div class="about-grid">
+    <div class="about-text">
+      <h2 class="s-head">Engineer who builds<br>systems that scale.</h2>
+      <p>I'm a <strong>Software Engineer at Tata Consultancy Services</strong>, building large-scale B2B and B2C telecom platforms for global clients. My focus is on distributed systems, microservices, and high-availability backends that don't break under pressure.</p>
+      <p>I thrive in the intersection of <strong>performance engineering</strong> and clean architecture — whether it's optimising a Neo4j graph database with 30M+ nodes or automating CI/CD pipelines to cut deployment time in half.</p>
+      <p>Deeply curious about <strong>AI/ML-driven solutions</strong> and their role in making systems smarter and more reliable.</p>
+    </div>
+    <div>
+      <div class="about-stats">
+        <div class="stat-box">
+          <div class="stat-num">45%</div>
+          <div class="stat-label">DB query efficiency improvement</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">50%</div>
+          <div class="stat-label">Deployment time reduction via CI/CD</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">30M+</div>
+          <div class="stat-label">Neo4j graph nodes managed</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">98%</div>
+          <div class="stat-label">ML model prediction accuracy</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="section">
+  <p class="s-label">Technical skills</p>
+  <h2 class="s-head">What I build with.</h2>
+  <div class="skills-cats">
+    <div class="skill-cat">
+      <div class="cat-name">Languages &amp; Backend</div>
+      <div class="skill-list">
+        <div class="skill-item">Java</div>
+        <div class="skill-item">Python</div>
+        <div class="skill-item">SQL</div>
+        <div class="skill-item">Spring Boot</div>
+        <div class="skill-item">REST APIs</div>
+        <div class="skill-item">Microservices Architecture</div>
+      </div>
+    </div>
+    <div class="skill-cat">
+      <div class="cat-name">Cloud, Containers &amp; DevOps</div>
+      <div class="skill-list">
+        <div class="skill-item">Docker</div>
+        <div class="skill-item">Kubernetes (OpenShift)</div>
+        <div class="skill-item">Jenkins</div>
+        <div class="skill-item">GitHub Actions</div>
+        <div class="skill-item">Maven · SonarQube · Nexus</div>
+        <div class="skill-item">CI/CD Pipelines</div>
+      </div>
+    </div>
+    <div class="skill-cat">
+      <div class="cat-name">Databases &amp; Concepts</div>
+      <div class="skill-list">
+        <div class="skill-item">Neo4j (Graph DB)</div>
+        <div class="skill-item">MySQL · PostgreSQL</div>
+        <div class="skill-item">Distributed Systems</div>
+        <div class="skill-item">System Design</div>
+        <div class="skill-item">ACID Transactions</div>
+        <div class="skill-item">Concurrency &amp; Scalability</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="section">
+  <p class="s-label">Experience</p>
+  <h2 class="s-head">Where I've worked.</h2>
+  <div class="exp-card">
+    <div class="exp-header">
+      <div>
+        <div class="exp-role">Java Developer</div>
+        <div class="exp-company">Tata Consultancy Services (TCS)</div>
+      </div>
+      <div class="exp-date">Jan 2025 — Present · Bengaluru</div>
+    </div>
+    <ul class="exp-points">
+      <li>Developed large-scale B2B and B2C telecom platforms for global clients including Openserve using distributed microservices architecture, ensuring high availability, scalability, and fault tolerance.</li>
+      <li>Designed and implemented API-first architectures using Spring Boot and Nokia UIV framework, ensuring zero design drift and secure integration with multiple downstream systems.</li>
+      <li>Enhanced Neo4j Graph Database performance managing 30M+ interconnected nodes — achieved 45% improvement in query efficiency through profiling, index optimization, and schema refactoring.</li>
+      <li>Resolved concurrency and transactional issues in distributed systems using Spring's @Transactional semantics, locking mechanisms, and isolation-level tuning, ensuring strict ACID compliance.</li>
+      <li>Deployed and managed containerised microservices on Red Hat OpenShift (Kubernetes) using Helm orchestration, enabling horizontal scaling and auto-recovery.</li>
+      <li>Automated CI/CD pipelines using Jenkins, GitHub Actions, SonarQube, and Nexus — reduced deployment time by 50% while maintaining high code quality and traceability.</li>
+    </ul>
+    <div class="exp-badge">🟢 Currently employed here</div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="section">
+  <p class="s-label">Projects</p>
+  <h2 class="s-head">Things I've built.</h2>
+  <div class="projects-grid">
+    <div class="proj-card">
+      <div class="proj-num">01</div>
+      <div class="proj-title">Multiple Disease Prediction System using Machine Learning</div>
+      <p class="proj-desc">A unified ML-based disease prediction system capable of predicting Heart Disease, Diabetes, and Parkinson's Disease within a single application. Achieved up to 98% prediction accuracy through feature selection, hyperparameter tuning, and model optimization using Random Forest, SVM, and XGBoost.</p>
+      <div class="proj-tags">
+        <span class="tag">Python</span>
+        <span class="tag">Machine Learning</span>
+        <span class="tag">Random Forest</span>
+        <span class="tag">SVM</span>
+        <span class="tag">XGBoost</span>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-num">02</div>
+      <div class="proj-title">Telecom Platform — Microservices Backend</div>
+      <p class="proj-desc">Large-scale distributed backend powering B2B and B2C telecom services for a global client. Built with Spring Boot microservices, Neo4j graph database, OpenShift container orchestration, and fully automated CI/CD pipelines achieving 50% faster deployments.</p>
+      <div class="proj-tags">
+        <span class="tag">Java</span>
+        <span class="tag">Spring Boot</span>
+        <span class="tag">Neo4j</span>
+        <span class="tag">Kubernetes</span>
+        <span class="tag">Jenkins</span>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-num">03</div>
+      <div class="proj-title">Leave Management System</div>
+      <p class="proj-desc">A backend system built with Java and Spring Boot to manage employee leave requests and approvals end-to-end. Designed REST APIs for capturing and processing leave data with proper validation and business rule enforcement. Implemented eligibility checks, overlapping date detection, and balance validation. Built SQL-based data handling for storing, retrieving, and updating leave records with full history tracking — ensuring data consistency and integrity throughout.</p>
+      <div class="proj-tags">
+        <span class="tag">Java</span>
+        <span class="tag">Spring Boot</span>
+        <span class="tag">REST APIs</span>
+        <span class="tag">SQL</span>
+        <span class="tag">Data Validation</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education" class="section">
+  <p class="s-label">Education</p>
+  <h2 class="s-head">Where I studied.</h2>
+  <div class="edu-box">
+    <div>
+      <div class="edu-degree">Bachelor of Engineering — Information Science Engineering</div>
+      <div class="edu-inst">AMC Engineering College · Visvesvaraya Technological University (VTU)</div>
+      <div class="edu-loc">Bengaluru, Karnataka</div>
+    </div>
+    <div class="edu-year">2024</div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section">
+  <p class="s-label">Contact</p>
+  <div class="contact-big">Let's build<br>something<span> great.</span></div>
+  <p class="contact-sub">Open to new opportunities, collaborations, and interesting conversations.</p>
+  <div class="contact-links">
+    <a class="c-link" href="mailto:karthikmc60@gmail.com">
+      <div class="c-icon">✉</div>
+      <span>karthikmc60@gmail.com</span>
+      <small>Email</small>
+    </a>
+    <a class="c-link" href="https://linkedin.com/in/karthik-mc-363b17248" target="_blank">
+      <div class="c-icon">in</div>
+      <span>karthik-mc-363b17248</span>
+      <small>LinkedIn</small>
+    </a>
+    <a class="c-link" href="tel:+918618745366">
+      <div class="c-icon">☎</div>
+      <span>+91 86187 45366</span>
+      <small>Phone</small>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Karthik M C · Bengaluru, India</span>
+  <span>Software Engineer · TCS</span>
+</footer>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=(mx-5)+'px';cursor.style.top=(my-5)+'px'});
+function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=(rx-18)+'px';ring.style.top=(ry-18)+'px';requestAnimationFrame(animRing)}
+animRing();
+document.querySelectorAll('a,button,.stat-box,.proj-card,.skill-cat,.exp-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(2.5)';ring.style.transform='scale(1.4)'});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='scale(1)';ring.style.transform='scale(1)'});
+});
+
+// Hamburger toggle
+const hamburger = document.getElementById('hamburger');
+const navDrawer = document.getElementById('navDrawer');
+hamburger.addEventListener('click',()=>{
+  hamburger.classList.toggle('open');
+  navDrawer.classList.toggle('open');
+});
+// Close drawer on link click
+document.querySelectorAll('.drawer-link').forEach(a=>{
+  a.addEventListener('click',()=>{hamburger.classList.remove('open');navDrawer.classList.remove('open')});
+});
+
+// Nav scroll shadow
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  navbar.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// Active nav link on scroll
+const sections = ['hero','about','projects','skills','experience','education','contact'];
+const navLinks = document.querySelectorAll('.nav-link');
+const drawerLinks = document.querySelectorAll('.drawer-link');
+function setActive(id){
+  navLinks.forEach(a=>{a.classList.toggle('active', a.dataset.section===id)});
+  drawerLinks.forEach(a=>{a.classList.toggle('active', a.getAttribute('href')==='#'+id)});
+}
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting) setActive(e.target.id)});
+},{rootMargin:'-40% 0px -55% 0px'});
+sections.forEach(id=>{const el=document.getElementById(id);if(el) io.observe(el)});
+
+// Reveal animations
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'}})},{threshold:0.1});
+document.querySelectorAll('.section > *:not(.s-label)').forEach(el=>{
+  el.style.opacity='0';el.style.transform='translateY(24px)';el.style.transition='opacity 0.6s ease, transform 0.6s ease';
+  obs.observe(el);
+});
+</script>
+</body>
+</html>
